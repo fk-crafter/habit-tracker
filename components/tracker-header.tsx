@@ -13,7 +13,7 @@ export const TrackerHeader = ({ progress }: Props) => (
           <Target className="text-black w-6 h-6" />
         </div>
         <div>
-          <h1 className="text-xl font-bold text-white tracking-tight">
+          <h1 className="text-lg md:text-xl font-bold text-white tracking-tight">
             Tracker d&apos;habitudes
           </h1>
         </div>
