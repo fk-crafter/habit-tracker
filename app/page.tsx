@@ -61,7 +61,6 @@ export default function Page() {
     <main className="h-dvh w-full bg-[#030303] flex flex-col items-center p-4 md:p-10 font-sans selection:bg-white/10">
       <div className="w-full max-w-5xl flex flex-col h-full gap-6">
         <TrackerHeader progress={progress} />
-
         <form onSubmit={addHabit} className="flex gap-2">
           <div className="relative flex-1 group">
             <Plus
@@ -83,48 +82,48 @@ export default function Page() {
             Ajouter
           </button>
         </form>
-
         <div className="flex-1 bg-zinc-900/10 border border-zinc-800 rounded-3xl flex flex-col overflow-hidden backdrop-blur-md shadow-2xl">
-          <div className="flex bg-zinc-900/40 border-b border-zinc-800 overflow-hidden">
-            <div className="sticky left-0 z-20 bg-zinc-900 px-4 py-4 min-w-[140px] md:min-w-[200px] text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 italic border-r border-zinc-800">
-              Habitudes
-            </div>
-            <div className="flex flex-1 overflow-hidden">
-              {DAYS_SHORT.map((d) => (
-                <div
-                  key={d}
-                  className="shrink-0 w-[50px] md:flex-1 md:min-w-[60px] flex items-center justify-center text-[10px] font-bold text-zinc-400 border-l border-zinc-800/50 uppercase tracking-widest leading-tight"
-                >
-                  {d}
+          <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar">
+            <div className="min-w-[600px] md:min-w-full">
+              <div className="flex bg-zinc-900/40 border-b border-zinc-800 sticky top-0 z-30">
+                <div className="sticky left-0 z-40 bg-[#060606] px-4 py-4 min-w-[120px] md:min-w-[200px] text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 italic border-r border-zinc-800">
+                  Habitudes
                 </div>
-              ))}
-            </div>
-          </div>
+                <div className="flex flex-1">
+                  {DAYS_SHORT.map((d) => (
+                    <div
+                      key={d}
+                      className="flex-1 min-w-[50px] md:min-w-[60px] flex items-center justify-center text-[10px] font-bold text-zinc-400 border-l border-zinc-800/50 uppercase tracking-widest py-4"
+                    >
+                      {d}
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-          <div className="flex-1 overflow-y-auto overflow-x-auto custom-scrollbar">
-            <div className="min-w-max md:min-w-full">
-              {habits.length === 0 ? (
-                <div className="flex flex-col items-center justify-center text-zinc-600 py-20 opacity-50">
-                  <Target size={40} className="mb-4 stroke-[1px]" />
-                  <p className="text-[10px] uppercase tracking-widest font-bold">
-                    Prêt pour le protocole ?
-                  </p>
-                </div>
-              ) : (
-                habits.map((h, idx) => (
-                  <HabitRow
-                    key={idx}
-                    label={h.name}
-                    days={h.data}
-                    onToggle={(dIdx) => toggle(idx, dIdx)}
-                    onDelete={() => deleteHabit(idx)}
-                  />
-                ))
-              )}
+              <div className="flex flex-col">
+                {habits.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center text-white py-20 opacity-50">
+                    <Target size={40} className="mb-4 stroke-[1px]" />
+                    <p className="text-[10px] uppercase tracking-widest font-bold">
+                      Créez votre première habitude
+                    </p>
+                  </div>
+                ) : (
+                  habits.map((h, idx) => (
+                    <HabitRow
+                      key={idx}
+                      label={h.name}
+                      days={h.data}
+                      onToggle={(dIdx) => toggle(idx, dIdx)}
+                      onDelete={() => deleteHabit(idx)}
+                    />
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
-
         <footer className="flex justify-between text-[10px] text-zinc-600 uppercase tracking-[0.2em] font-bold px-2 mb-2">
           <span>{habits.length} habitudes créées</span>
         </footer>
