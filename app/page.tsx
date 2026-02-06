@@ -1,4 +1,3 @@
-// app/page.tsx
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
@@ -16,11 +15,17 @@ export default function Page() {
   useEffect(() => {
     const saved = localStorage.getItem("my-premium-tracker");
     if (saved) {
-      setTimeout(() => {
-        setHabits(JSON.parse(saved));
-        setIsLoaded(true);
-      }, 1000);
+      try {
+        setTimeout(() => {
+          setHabits(JSON.parse(saved));
+        }, 1000);
+      } catch (e) {
+        console.error("Failed to parse habits", e);
+      }
     }
+    setTimeout(() => {
+      setIsLoaded(true);
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -38,8 +43,9 @@ export default function Page() {
 
   const toggle = (hIdx: number, dIdx: number) => {
     const newHabits = [...habits];
+    newHabits[hIdx].data = [...newHabits[hIdx].data];
     newHabits[hIdx].data[dIdx] = !newHabits[hIdx].data[dIdx];
-    setHabits([...newHabits]);
+    setHabits(newHabits);
   };
 
   const deleteHabit = (hIdx: number) => {
@@ -58,9 +64,10 @@ export default function Page() {
   if (!isLoaded) return <div className="h-screen bg-[#030303]" />;
 
   return (
-    <main className="h-dvh w-full bg-[#030303] flex flex-col items-center p-4 md:p-10 font-sans selection:bg-white/10">
+    <main className="h-dvh w-full bg-[#030303] flex flex-col items-center p-4 md:p-10 font-sans selection:bg-white/10 overflow-hidden">
       <div className="w-full max-w-5xl flex flex-col h-full gap-6">
         <TrackerHeader progress={progress} />
+
         <form onSubmit={addHabit} className="flex gap-2">
           <div className="relative flex-1 group">
             <Plus
@@ -71,23 +78,24 @@ export default function Page() {
               type="text"
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Habitude..."
-              className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl py-3 md:py-4 pl-12 pr-4 text-sm text-white focus:outline-none focus:border-zinc-500 transition-all"
+              placeholder="Ajouter une habitude..."
+              className="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl py-3 md:py-4 pl-12 pr-4 text-sm text-white focus:outline-none focus:border-zinc-500 transition-all shadow-lg"
             />
           </div>
           <button
             type="submit"
-            className="bg-white text-black px-5 md:px-8 rounded-2xl font-bold text-sm hover:bg-zinc-200 transition-all active:scale-95"
+            className="bg-white text-black px-5 md:px-8 rounded-2xl font-bold text-sm hover:bg-zinc-200 transition-all active:scale-95 shadow-lg"
           >
             Ajouter
           </button>
         </form>
+
         <div className="flex-1 bg-zinc-900/10 border border-zinc-800 rounded-3xl flex flex-col overflow-hidden backdrop-blur-md shadow-2xl">
           <div className="flex-1 overflow-x-auto overflow-y-auto custom-scrollbar">
             <div className="min-w-[600px] md:min-w-full">
               <div className="flex bg-zinc-900/40 border-b border-zinc-800 sticky top-0 z-30">
                 <div className="sticky left-0 z-40 bg-[#060606] px-4 py-4 min-w-[120px] md:min-w-[200px] text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 italic border-r border-zinc-800">
-                  Habitudes
+                  Protocol
                 </div>
                 <div className="flex flex-1">
                   {DAYS_SHORT.map((d) => (
@@ -103,10 +111,10 @@ export default function Page() {
 
               <div className="flex flex-col">
                 {habits.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center text-white py-20 opacity-50">
-                    <Target size={40} className="mb-4 stroke-[1px]" />
-                    <p className="text-[10px] uppercase tracking-widest font-bold">
-                      Créez votre première habitude
+                  <div className="flex flex-col items-center justify-center text-white py-32 opacity-20">
+                    <Target size={48} className="mb-4 stroke-[1px]" />
+                    <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-center">
+                      En attente de nouvelles cibles
                     </p>
                   </div>
                 ) : (
@@ -124,8 +132,13 @@ export default function Page() {
             </div>
           </div>
         </div>
+
         <footer className="flex justify-between text-[10px] text-zinc-600 uppercase tracking-[0.2em] font-bold px-2 mb-2">
-          <span>{habits.length} habitudes créées</span>
+          <span className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+            {habits.length} habitudes actives
+          </span>
+          <span className="opacity-40">Privacy Protected • LocalStorage</span>
         </footer>
       </div>
 
