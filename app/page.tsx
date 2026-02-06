@@ -95,7 +95,7 @@ export default function Page() {
             <div className="min-w-[600px] md:min-w-full">
               <div className="flex bg-zinc-900/40 border-b border-zinc-800 sticky top-0 z-30">
                 <div className="sticky left-0 z-40 bg-[#060606] px-4 py-4 min-w-[120px] md:min-w-[200px] text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 italic border-r border-zinc-800">
-                  Protocol
+                  Habitudes
                 </div>
                 <div className="flex flex-1">
                   {DAYS_SHORT.map((d) => (
@@ -114,7 +114,7 @@ export default function Page() {
                   <div className="flex flex-col items-center justify-center text-white py-32 opacity-20">
                     <Target size={48} className="mb-4 stroke-[1px]" />
                     <p className="text-[10px] uppercase tracking-[0.3em] font-bold text-center">
-                      En attente de nouvelles cibles
+                      Entrez une habitude
                     </p>
                   </div>
                 ) : (
@@ -138,7 +138,6 @@ export default function Page() {
             <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
             {habits.length} habitudes actives
           </span>
-          <span className="opacity-40">Privacy Protected • LocalStorage</span>
         </footer>
       </div>
 
